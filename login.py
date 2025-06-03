@@ -12,6 +12,7 @@ class User:
         self.email = email
         self.password = password
         self.endereco = endereco
+        self.coletas = []
 
 # login
 def login(): # a fazer
@@ -28,8 +29,7 @@ def login(): # a fazer
 
 # cadastro
 def cadastrar():
-    efetuado = False
-    while efetuado != True:
+    while True:
         try:
             cpf = input("Insira seu CPF: ")
             cpf = cpf.replace(".","") # retira pontos da string, caso o usuário colocar
@@ -76,8 +76,16 @@ def cadastrar():
             new_user = User(cpf, nome_empresa, username, email, password, endereco) # cria objeto de usuário
             usuarios_cadastrados[str(cpf)] = new_user
             
-            print("Cadastro efetuado com sucesso! Efetuando login...")
+            print("Cadastro efetuado com sucesso! Efetuando login...\n")
             
-            efetuado = True
-            return efetuado # retorna valor booleano para já funcionar com a lógica do main
+            return new_user # retorna valor booleano para já funcionar com a lógica do main
 
+def mostrar_perfil(usuario):
+    print("-----------")
+    print(f"CPF cadastrado:\n{usuario.cpf}")
+    print(f"Nome da empresa:\n{usuario.nome_empresa}")
+    print(f"Nome do usuário:\n{usuario.username}")
+    print(f"E-mail:\n{usuario.email}")
+    print(f"Endereço:\n{usuario.endereco["rua"]}, {usuario.endereco["numero"]} {usuario.endereco["complemento"]}")
+    print(f"{usuario.endereco["CEP"]}")
+    print(f"{usuario.endereco["bairro"]}, {usuario.endereco["cidade"]}, {usuario.endereco["UF"]}")

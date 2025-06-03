@@ -1,8 +1,9 @@
 import login
+import coleta
 
-registrado = False
+usuario = None
 
-while not registrado:
+while usuario == None:
     print("Seja bem-vindo ao Recycle Barber.")
     print("------------------")
     print("Selecione uma opção:")
@@ -18,7 +19,7 @@ while not registrado:
         pass
     elif opt == "2":
         try:
-            registrado = login.cadastrar()
+            usuario = login.cadastrar()
         except:
             print("Ocorreu um erro inesperado, tente se cadastrar novamente.")
     else:
@@ -28,5 +29,39 @@ while not registrado:
         
         
 # loop principal, após fazer login
-while registrado:
-    pass # a fazer
+while usuario:
+    print(f"Olá, {usuario.username}!")
+    print()
+    print("------------------")
+    print("Selecione uma opção:")
+    print("1 - Agendar uma nova coleta.")
+    print("2 - Ver histórico de coletas.")
+    print("3 - Trocar pontos.")
+    print("4 - Mostrar perfil.")
+    print("5 - Sair.")
+    print("------------------")
+    
+    opt = input("")
+
+    if opt == "1":
+        try:
+            usuario.coletas.append(coleta.solicitar_coleta(usuario))
+        except:
+            print("Ocorreu um erro inesperado, tente novamente.")
+        else:
+            print("Coleta agendada com sucesso!")
+            input("Pressione para voltar.\n")
+    elif opt == "2":
+        if len(usuario.coletas) > 0:
+            for i in usuario.coletas:
+                coleta.mostrar_coleta(i)
+        else:
+            print("Você ainda não agendou nenhuma coleta!")
+        input("Pressione Enter para voltar.\n")
+    elif opt == "3":
+        pass
+    elif opt == "4":
+        login.mostrar_perfil(usuario)
+        input("Pressione Enter para voltar.\n")
+    else:
+        usuario = None
