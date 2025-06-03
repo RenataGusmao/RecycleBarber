@@ -43,4 +43,3 @@ def mostrar_coleta(coleta):
     print(f"Data prevista: {coleta.data_prevista}")
     print(f"Tipos de resíduos: {coleta.residuos}")
     print(f"Status: {coleta.status}")
-    input("Pressione Enter para voltar.\n")
