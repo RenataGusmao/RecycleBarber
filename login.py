@@ -14,12 +14,19 @@ class User:
         self.endereco = endereco
         self.coletas = []
 
+def verificar_cpf(cpf = str):
+    cpf = cpf.replace(".","") # retira pontos da string, caso o usuário colocar
+    cpf = cpf.replace("-","") # retira traços da string, caso o usuário colocar
+    if len(cpf) != 11: raise Exception # um CPF tem 11 digitos, se não tiver, levanta uma exceção
+    cpf = int(cpf)
+    return cpf
+
 # login
 def login(): # a fazer
     efetuado = False
     while not efetuado:
-        cpf = input("Insira seu CPF. Não utilize pontos e traços.")
-        if cpf in usuarios_cadastrados:
+        cpf = verificar_cpf(input("Insira seu CPF: "))
+        if str(cpf) in usuarios_cadastrados:
             usuario = usuarios_cadastrados[cpf]
             senha = input("Insira sua senha.")
             if senha == usuario.password:
@@ -31,11 +38,7 @@ def login(): # a fazer
 def cadastrar():
     while True:
         try:
-            cpf = input("Insira seu CPF: ")
-            cpf = cpf.replace(".","") # retira pontos da string, caso o usuário colocar
-            cpf = cpf.replace("-","") # retira traços da string, caso o usuário colocar
-            if len(cpf) != 11: raise Exception # um CPF tem 11 digitos, se não tiver, levanta uma exceção
-            cpf = int(cpf) # para verificar se o CPF não tem letras ou nada a mais estranho
+            cpf = verificar_cpf(input("Insira seu CPF: "))
         except:
             print("Erro: CPF inválido. Por favor, tente novamente.")
         else:
