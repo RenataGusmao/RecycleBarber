@@ -17,7 +17,10 @@ while rodando:
         opt = input("")
 
         if opt == "1":
-            pass
+            #try:
+            usuario = login.login()
+            #except:
+                #print("Ocorreu um erro inesperado, tente se cadastrar novamente.")
         elif opt == "2":
             try:
                 usuario = login.cadastrar()

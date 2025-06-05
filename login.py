@@ -15,24 +15,26 @@ class User:
         self.coletas = []
 
 def verificar_cpf(cpf = str):
-    cpf = cpf.replace(".","") # retira pontos da string, caso o usuário colocar
-    cpf = cpf.replace("-","") # retira traços da string, caso o usuário colocar
-    if len(cpf) != 11: raise Exception # um CPF tem 11 digitos, se não tiver, levanta uma exceção
-    cpf = int(cpf)
-    return cpf
+    try:
+        cpf = cpf.replace(".","") # retira pontos da string, caso o usuário colocar
+        cpf = cpf.replace("-","") # retira traços da string, caso o usuário colocar
+        if len(cpf) != 11: raise Exception # um CPF tem 11 digitos, se não tiver, levanta uma exceção
+        if not cpf.isdigit(): raise Exception # verifica se todos os caracters são digitos
+    except:
+        print("CPF inválido, tente novamente.")
+    else:
+        return cpf # retorna cpf como string
 
 # login
 def login(): # a fazer
-    efetuado = False
-    while not efetuado:
+    while True:
         cpf = verificar_cpf(input("Insira seu CPF: "))
-        if str(cpf) in usuarios_cadastrados:
+        if cpf in usuarios_cadastrados:
             usuario = usuarios_cadastrados[cpf]
             senha = input("Insira sua senha.")
-            if senha == usuario.password:
-                efetuado = True
-            else:
-                pass
+            if senha == usuario.password: return usuario
+            else: print("Senha incorrecta, tente novamente.")
+        else: print("O CPF não está cadastrado.")
 
 # cadastro
 def cadastrar():
@@ -42,7 +44,7 @@ def cadastrar():
         except:
             print("Erro: CPF inválido. Por favor, tente novamente.")
         else:
-            if str(cpf) in usuarios_cadastrados: # transforma o CPF em string temporariamente para 
+            if cpf in usuarios_cadastrados: # transforma o CPF em string temporariamente para 
                 print("CPF já cadastrado. Retornando...")
                 break # se o CPF já estiver cadastrado, quebra o loop e cancela o cadastro
             
@@ -77,7 +79,7 @@ def cadastrar():
             endereco["complemento"] = input("(Opcional) Complemento: ")
             
             new_user = User(cpf, nome_empresa, username, email, password, endereco) # cria objeto de usuário
-            usuarios_cadastrados[str(cpf)] = new_user
+            usuarios_cadastrados[cpf] = new_user
             
             print("Cadastro efetuado com sucesso! Efetuando login...\n")
             
