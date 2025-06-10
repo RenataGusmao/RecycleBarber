@@ -1,9 +1,7 @@
-import random
-import string
 import server
 
 # objeto do usuário
-class User  :
+class User:
     def __init__(self, cpf, nome_empresa, username, usertype, email, password, endereco):
         self.cpf = cpf
         self.nome_empresa = nome_empresa
@@ -15,6 +13,7 @@ class User  :
         self.coletas = []
         self.coletas_realizadas = []
 
+# func para verificar o CPF
 def verificar_cpf(cpf = str):
     try:
         cpf = cpf.replace(".","") # retira pontos da string, caso o usuário colocar
@@ -24,30 +23,31 @@ def verificar_cpf(cpf = str):
     except:
         print("CPF inválido, tente novamente.")
     else:
-        cpf == ""
         return cpf # retorna cpf como string
 
 # login
 def login(): # a fazer
     while True:
         cpf = verificar_cpf(input("Insira seu CPF: "))
-        if cpf in server.usuarios_cadastrados:
-            usuario = server.usuarios_cadastrados[cpf]
+        if cpf in server.usuarios_cadastrados: # se o CPF tiver cadastrado:
+            usuario = server.usuarios_cadastrados[cpf] # procura o obj do usuario pela chave (CPF) 
             senha = input("Insira sua senha.")
-            if senha == usuario.password: return usuario
-            else: print("Senha incorrecta, tente novamente.")
-        else: print("O CPF não está cadastrado.")
+            if senha == usuario.password: return usuario # se a senha for correta, retorna o obj de usuário
+            else: print("Senha incorreta, tente novamente.")
+        else: 
+            print("O CPF não está cadastrado.")
+            break
 
 # cadastro
 def cadastrar():
-    while True:
+    while True: # loop para verificar se o CPF é válido
         cpf = verificar_cpf(input("Insira seu CPF: "))
         if cpf == None:
             pass
         else:
             break
-        
-    if cpf in server.usuarios_cadastrados: # transforma o CPF em string temporariamente para 
+    # se já estiver cadastrado, abortar cadastro
+    if cpf in server.usuarios_cadastrados:
         print("CPF já cadastrado. Retornando...")
         return None
     
@@ -66,7 +66,7 @@ def cadastrar():
     endereco["cidade"] = input("Cidade: ")
     endereco["bairro"] = input("Bairro: ")
     
-    while True:
+    while True: # loop para verificar se o CEP é válido
         try:
             endereco["CEP"] = input("CEP: ") # mesma lógica de verificação do CPF
             endereco["CEP"] = endereco["CEP"].replace("-","")
@@ -81,9 +81,9 @@ def cadastrar():
     endereco["numero"] = input("Número: ")
     endereco["complemento"] = input("(Opcional) Complemento: ")
     
-    while True:
+    while True: # loop para assegurar que o usuario entre opção válida
         print("Você é...")
-        print("1 - Usuario.")
+        print("1 - Usuário (Profissional de estética)")
         print("2 - Parceiro de coleta.")
         
         opt = input()
@@ -95,15 +95,17 @@ def cadastrar():
             break
         else:
             print("Entre uma opção valida.")
-    
+
+    # cria objeto de usuario
     new_user = User(cpf, nome_empresa, username, usertype, email, password, endereco) # cria objeto de usuário
-    server.usuarios_cadastrados[cpf] = new_user
+    # cadastra o usuário no dicionário de usuarios cadastrados do servidor, usando CPF como chave
+    server.usuarios_cadastrados[cpf] = new_user 
         
     print("Cadastro efetuado com sucesso! Efetuando login...\n")
     
-    return new_user # retorna valor booleano para já funcionar com a lógica do main
+    return new_user # retorna objeto de usuúario
 
-def mostrar_perfil(usuario):
+def mostrar_perfil(usuario): # printa informações do usuário
     print("-----------")
     print(f"CPF cadastrado:\n{usuario.cpf}")
     print(f"Nome da empresa:\n{usuario.nome_empresa}")
