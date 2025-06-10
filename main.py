@@ -58,8 +58,10 @@ while rodando:
                     print("Coleta agendada com sucesso!")
                     voltar()
             elif opt == "2":
-                if len(usuario.coletas) > 0:
+                if len(usuario.coletas) > 0 or if len(usuario.coletas_realizadas) > 0:
                     for i in usuario.coletas:
+                        coleta.mostrar_coleta(i,"usuario")
+                    for i in usuario.coletas_realizadas:
                         coleta.mostrar_coleta(i,"usuario")
                 else:
                     print("Você ainda não agendou nenhuma coleta!")
@@ -117,8 +119,9 @@ while rodando:
             elif opt == "3":
                 if len(usuario.coletas) > 0:
                     for i in usuario.coletas:
-                        if i.status == "Finalizada":
-                            coleta.mostrar_coleta(i,"usuario")
+                        coleta.mostrar_coleta(i,"usuario")
+                    for i in usuario.coletas_realizadas:
+                        coleta.mostrar_coleta(i,"usuario")
                 else:
                     print("Você ainda não finalizou nenhuma coleta!")
                 voltar()

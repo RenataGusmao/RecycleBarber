@@ -13,6 +13,7 @@ class User  :
         self.password = password
         self.endereco = endereco
         self.coletas = []
+        self.coletas_realizadas = []
 
 def verificar_cpf(cpf = str):
     try:

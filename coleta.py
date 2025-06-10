@@ -33,15 +33,14 @@ def solicitar_coleta(solicitante):
 
 def mostrar_coleta(coleta,usertype):
     if usertype == "usuario":
-        print("--------")
         print(f"ID da coleta: {coleta.id}")
         print(f"Data agendada: {coleta.data_solicitacao}")
         print(f"Data prevista: {coleta.data_prevista}")
         print(f"Tipos de resíduos: {coleta.residuos}")
         print(f"Status: {coleta.status}")
+        print("----------")
     else:
         usuario_info = server.usuarios_cadastrados[coleta.solicitante]
-        print("--------")
         print(f"Solicitação {coleta.id}")
         print(f"Solicitante: {usuario_info.username} | Data solicitada: {coleta.data_solicitacao}")
         print(f"Tipos de resíduos: {coleta.residuos}")
@@ -49,10 +48,13 @@ def mostrar_coleta(coleta,usertype):
         print(f"{usuario_info.endereco['rua']}, {usuario_info.endereco['numero']}, {usuario_info.endereco['complemento']}")
         print(f"{usuario_info.endereco['bairro']}, {usuario_info.endereco['cidade']}, {usuario_info.endereco['UF']}")
         print(f"CEP: {usuario_info.endereco['CEP']}")
+        print("----------")
 
 def realizar_coleta(coleta):
     solicitante = server.usuarios_cadastrados[coleta.solicitante]
     clt_index = solicitante.coletas.index(coleta)
     solicitante.coletas[clt_index].status = "Finalizada"
+    solicitante.coletas_realizadas.append(coleta)
+    solicitante.coletas.pop(clt_index)
     server.coletas.pop(coleta)
     print (f"Coleta {coleta.id} finalizada com sucesso!")
