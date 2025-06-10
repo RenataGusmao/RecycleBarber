@@ -88,7 +88,7 @@ while rodando:
             
             if opt == "1":
                 for i in server.coletas:
-                    print(f"- {server.coletas.index(i) + 1}:")
+                    print(f"- Coleta #{server.coletas.index(i) + 1}:")
                     coleta.mostrar_coleta(i,"coleta")
                 coleta_selecionada = input("\nSelecionar uma coleta?\n(Digite o índice da coleta para selecionar. Digite qualquer coisa além do índice para sair.)")
                 if coleta_selecionada.isdigit():
@@ -97,15 +97,30 @@ while rodando:
                     except:
                         print("Não foi possível achar esse pedido de coleta.\nPor favor, tente novamente.")
                 voltar()
-            elif opt == "2" or opt == "3":
+            elif opt == "2":
                 if len(usuario.coletas) > 0:
                     for i in usuario.coletas:
-                        if opt == "2" and i.status == "Agendada":
-                            coleta.mostrar_coleta(i,"usuario")
-                        else:
-                            coleta.mostrar_coleta(i,"usuario")
+                        print(f"- Coleta #{usuario.coletas.index(i) + 1}:")
+                        if i.status == "Agendada": coleta.mostrar_coleta(i,"usuario")
+                    coleta_selecionada = input("\nSelecionar uma coleta?\n(Digite o índice da coleta para selecionar. Digite qualquer coisa além do índice para sair.)")
+                    if coleta_selecionada.isdigit():
+                        try:
+                            coleta.mostrar_coleta(usuario.coletas[int(coleta_selecionada) - 1],"usuario")
+                            realizar = input("Deseja realizar essa coleta? (S/N)")
+                            if realizar.lower() == "s":
+                                coleta.realizar_coleta(usuario.coletas[int(coleta_selecionada) - 1])
+                        except:
+                            print("Não foi possível achar essa coleta.\nPor favor, tente novamente.")
                 else:
                     print("Você ainda não aceitou nenhuma coleta!")
+                    voltar()
+            elif opt == "3":
+                if len(usuario.coletas) > 0:
+                    for i in usuario.coletas:
+                        if i.status == "Finalizada":
+                            coleta.mostrar_coleta(i,"usuario")
+                else:
+                    print("Você ainda não finalizou nenhuma coleta!")
                 voltar()
             elif opt == "4":
                 login.mostrar_perfil(usuario)
