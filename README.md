@@ -14,6 +14,6 @@ Principais Funcionalidades:
 - Solicitação de coletas com empresas licenciadas
 - Acompanhamento do status de coleta e tratamento
 - Acesso a conteúdos educativos sobre biossegurança e sustentabilidade
-- Sistema de gamificação por boas práticas ambientais
-- Relatórios ambientais automáticos
-- Suporte jurídico via parceria com o Fecomércio
+
+
+
