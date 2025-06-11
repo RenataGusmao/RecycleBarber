@@ -1,3 +1,3 @@
-coletas = [] # lista de coletas
+coletas = []
 
-usuarios_cadastrados = {} # dicionário de usuários cadastrados
+usuarios_cadastrados = {}
