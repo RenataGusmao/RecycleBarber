@@ -2,14 +2,14 @@ import login
 import coleta
 import server
 
-usuario = None # usuario cadastrado no momento
+usuario = None
 rodando = True
 
-def voltar(): # função para deixar a mensagem de voltar consistente
+def voltar():
     input("Pressione Enter para voltar.\n")
 
-while rodando: # loop principal
-    while usuario == None: # enquanto não tiver usuario (deslogado), executar esse loop
+while rodando:
+    while usuario == None:
         print("Seja bem-vindo ao Recycle Barber.")
         print("------------------")
         print("Selecione uma opção:")
@@ -18,7 +18,7 @@ while rodando: # loop principal
         print("3 - Sair.")
         print("------------------")
         
-        opt = input("") # escolha do usuário
+        opt = input("")
 
         if opt == "1":
             usuario = login.login()
@@ -26,12 +26,11 @@ while rodando: # loop principal
             usuario = login.cadastrar()
         else:
             print("Saindo...")
-            rodando = False # setar o rodando para false quebra o loop principal
+            rodando = False
             break
             
-    # loop principal, após fazer login
-    while usuario: # enquanto tiver um usuario logado, executar esse loop
-        if usuario.usertype == "usuario": # loop para usuários (barbeiros e profissionais de beleza)
+    while usuario:
+        if usuario.usertype == "usuario":
             print(f"Olá, {usuario.username}!")
             print("Você está logado como um barbeiro.")
             print()
@@ -43,24 +42,31 @@ while rodando: # loop principal
             print("4 - Sair.")
             print("------------------")
             
-            opt = input("") # escolha do usuário
+            opt = input("")
 
             if opt == "1":
-                try: # tenta agendar uma coleta
+                try:
                     usuario.coletas.append(coleta.solicitar_coleta(usuario.cpf))
-                except: # se em algum lugar houver um erro, executa isso
+                except:
                     print("Ocorreu um erro inesperado, tente novamente.")
-                else: # se não, exceuta isso
+                else:
                     print("Coleta agendada com sucesso!")
                     voltar()
             elif opt == "2":
-                # se qualquer uma dessas duas listas não estiver vazia, rodar:
                 if len(usuario.coletas) > 0 or len(usuario.coletas_realizadas) > 0:
                     for i in usuario.coletas:
                         coleta.mostrar_coleta(i,"usuario")
                     for i in usuario.coletas_realizadas:
                         coleta.mostrar_coleta(i,"usuario")
-                else: # se não:
+                else:
+                    print("Você ainda não agendou nenhuma coleta!")
+                voltar()
+                if len(usuario.coletas) > 0 or len(usuario.coletas_realizadas) > 0:
+                    for i in usuario.coletas:
+                        coleta.mostrar_coleta(i,"usuario")
+                    for i in usuario.coletas_realizadas:
+                        coleta.mostrar_coleta(i,"usuario")
+                else:
                     print("Você ainda não agendou nenhuma coleta!")
                 voltar()
             elif opt == "3":
@@ -70,7 +76,7 @@ while rodando: # loop principal
                 usuario = None
                 break
         
-        else: # loop para parceiros de coleta
+        else:
             print(f"Olá, {usuario.username}!")
             print("Você está logado como parceiro de coleta.")
             print()
@@ -83,49 +89,45 @@ while rodando: # loop principal
             print("5 - Sair.")
             print("------------------")
             
-            opt = input("") # escolha do usuário
+            opt = input("")
             
             if opt == "1":
-                if len(server.coletas) > 0: # se tiver pedidos de coleta no servidor
+                if len(server.coletas) > 0:
                     for i in server.coletas: 
-                        print(f"- Coleta #{server.coletas.index(i) + 1}:") # printa os pedidos acompanhados de um índice
-                        coleta.mostrar_coleta(i,"coleta")
-                    # entrada do usuário:    
+                        print(f"- Coleta #{server.coletas.index(i) + 1}:")
+                        coleta.mostrar_coleta(i,"coleta")   
                     coleta_selecionada = input("\nSelecionar uma coleta?\n(Digite o índice da coleta para selecionar. Digite qualquer coisa além do índice para sair.)")
                     
-                    if coleta_selecionada.isdigit(): # verifica se o usuário entrou um número
-                        try: # tenta adicionar a coleta na lista do servidor ao perfil do coletador
+                    if coleta_selecionada.isdigit():
+                        try:
                             usuario.coletas.append(server.coletas[int(coleta_selecionada) - 1])
-                        except: # caso o coletador erre o índice
+                        except:
                             print("Não foi possível achar esse pedido de coleta.\nPor favor, tente novamente.")
                         else:
-                            server.coletas.pop(int(coleta_selecionada) - 1) # retira a coleta do servidor
+                            server.coletas.pop(int(coleta_selecionada) - 1)
                             print(f"Coleta #{coleta_selecionada} selecionada!")
-                    # se o coletador não entra um índice, automaticamente pula
-                else: # se não
+                else:
                     print("Não há coletas pendentes agora!")
                 voltar()
             elif opt == "2":
-                if len(usuario.coletas) > 0: # verificar apenas se há itens na lista de coletas ativas
+                if len(usuario.coletas) > 0:
                     for i in usuario.coletas:
-                        print(f"- Coleta #{usuario.coletas.index(i) + 1}:") # printa os pedidos acompanhados de um índice
+                        print(f"- Coleta #{usuario.coletas.index(i) + 1}:")
                         coleta.mostrar_coleta(i,"coleta")
-                    # entrada do usuário:
                     coleta_selecionada = input("\nSelecionar uma coleta?\n(Digite o índice da coleta para selecionar. Digite qualquer coisa além do índice para sair.)")
-                    if coleta_selecionada.isdigit(): # verifica se o usuário entrou um número
-                        try: # tenta selecionar uma coleta
+                    if coleta_selecionada.isdigit():
+                        try:
                             coleta.mostrar_coleta(usuario.coletas[int(coleta_selecionada) - 1],"coleta")
-                        except: # caso o índice esteja fora de alcance
+                        except:
                             print("Não foi possível achar essa coleta.\nPor favor, tente novamente.")
                         else:
                             realizar = input("Deseja realizar essa coleta? (S/N)")
-                            if realizar.lower() == "s": # se sim, finaliza a coleta
+                            if realizar.lower() == "s":
                                 coleta.realizar_coleta(usuario.coletas[int(coleta_selecionada) - 1],usuario)
                 else:
                     print("Você ainda não aceitou nenhuma coleta!")
                     voltar()
             elif opt == "3":
-                # mostra tanto coletas ativas quanto as que foram realizadas, nessa ordem
                 if len(usuario.coletas) > 0 or len(usuario.coletas_realizadas) > 0:
                     for i in usuario.coletas:
                         coleta.mostrar_coleta(i,"coleta")
