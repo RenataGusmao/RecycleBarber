@@ -61,14 +61,6 @@ while rodando:
                 else:
                     print("Você ainda não agendou nenhuma coleta!")
                 voltar()
-                if len(usuario.coletas) > 0 or len(usuario.coletas_realizadas) > 0:
-                    for i in usuario.coletas:
-                        coleta.mostrar_coleta(i,"usuario")
-                    for i in usuario.coletas_realizadas:
-                        coleta.mostrar_coleta(i,"usuario")
-                else:
-                    print("Você ainda não agendou nenhuma coleta!")
-                voltar()
             elif opt == "3":
                 login.mostrar_perfil(usuario)
                 voltar()
